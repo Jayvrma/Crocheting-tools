@@ -1,0 +1,24 @@
+{
+  "name": "crocheting-tools",
+  "productName": "crocheting-tools",
+  "version": "1.0.0",
+  "description": "My Electron application description",
+  "main": ".webpack/main",
+  "private": true,
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "echo \"No linting configured\""
+  },
+  "keywords": [],
+  "author": {
+    "name": "Jayvrma",
+    "email": "81652539+Jayvrma@users.noreply.github.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.1"
+  }
+}
