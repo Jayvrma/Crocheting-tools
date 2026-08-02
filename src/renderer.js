@@ -27,7 +27,35 @@
  */
 
 import './index.css';
+import { attachUploadPageEvents, renderUploadPage } from './upload.js';
 
-console.log(
-  '👋 This message is being logged by "renderer.js", included via Vite',
-);
+const app = document.createElement('main');
+app.className = 'app-shell';
+document.body.innerHTML = '';
+document.body.appendChild(app);
+
+const routes = {
+  '/': () => `
+    <section class="page">
+      <h1>Welcome to Crochet Tools</h1>
+      <nav class="nav-links">
+        <a href="#/upload">Upload</a>
+      </nav>
+    </section>
+  `,
+  '/upload': () => renderUploadPage(),
+};
+
+const render = () => {
+  const hash = window.location.hash || '#/';
+  const path = hash.startsWith('#') ? hash.slice(1) : hash;
+  const route = routes[path] || routes['/'];
+  app.innerHTML = route();
+
+  if (path === '/upload') {
+    attachUploadPageEvents();
+  }
+};
+
+window.addEventListener('hashchange', render);
+render();
