@@ -27,6 +27,13 @@
  */
 
 import './index.css';
+import navbarHtml from './pages/navbar.html?raw';
+import homeHtml from './pages/home.html?raw';
+import filesHtml from './pages/files.html?raw';
+import viewHtml from './pages/view.html?raw';
+import infoHtml from './pages/info.html?raw';
+import logoSrc from './images/cat.png';
+import { fillTemplate } from './template.js';
 import { attachUploadPageEvents, renderUploadPage } from './upload.js';
 
 const app = document.createElement('main');
@@ -34,16 +41,14 @@ app.className = 'app-shell';
 document.body.innerHTML = '';
 document.body.appendChild(app);
 
+const navbar = fillTemplate(navbarHtml, { logoSrc });
+
 const routes = {
-  '/': () => `
-    <section class="page">
-      <h1>Welcome to Crochet Tools</h1>
-      <nav class="nav-links">
-        <a href="#/upload">Upload</a>
-      </nav>
-    </section>
-  `,
-  '/upload': () => renderUploadPage(),
+  '/': () => navbar + homeHtml,
+  '/upload': () => navbar + renderUploadPage(),
+  '/files': () => navbar + filesHtml,
+  '/view': () => navbar + viewHtml,
+  '/info': () => navbar + infoHtml,
 };
 
 const render = () => {

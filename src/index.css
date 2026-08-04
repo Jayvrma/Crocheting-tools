@@ -13,10 +13,54 @@ body {
 .app-shell {
   min-height: 100vh;
   display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
+  flex-direction: column;
   padding: 2rem;
   box-sizing: border-box;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 3em;
+  min-height: 14vh;
+  margin: -2rem -2rem 2rem;
+  padding: 1rem 2rem;
+  box-sizing: border-box;
+  background: #D0F0C0;
+  border-bottom: 1px solid #000000;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding-right: 1rem;
+}
+
+.navbar-logo {
+  height: 3.5rem;
+  width: 3.5rem;
+  object-fit: contain;
+}
+
+.navbar-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+}
+
+.navbar a {
+  color: #010B13;
+  text-decoration: none;
+  font-size: 1.2rem;
+}
+
+.navbar a:hover {
+  text-decoration: none;
 }
 
 .page {
