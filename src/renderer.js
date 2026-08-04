@@ -35,6 +35,7 @@ import infoHtml from './pages/info.html?raw';
 import logoSrc from './images/cat.png';
 import { fillTemplate } from './template.js';
 import { attachUploadPageEvents, renderUploadPage } from './upload.js';
+import { attachFilesPageEvents } from './pdf-list.js';
 
 const app = document.createElement('main');
 app.className = 'app-shell';
@@ -59,6 +60,10 @@ const render = () => {
 
   if (path === '/upload') {
     attachUploadPageEvents();
+  }
+
+  if (path === '/files') {
+    attachFilesPageEvents();
   }
 };
 
