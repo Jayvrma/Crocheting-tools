@@ -1,9 +1,10 @@
 <section class="page">
-  <h1>Upload Files</h1>
-  <input type="file" id="filePicker" accept="application/pdf" />
-  <p id="status">Choose a PDF to upload.</p>
-  <div id="pdfList" class="pdf-list"></div>
-  <nav class="nav-links">
-    <a href="#/">Back</a>
-  </nav>
+  <h1 class="header_upload">Upload Files</h1>
+  <label for="filePicker" class="file-picker-trigger">
+    <img src="{{placeholderSrc}}" alt="Choose a PDF file" class="file-picker-image" />
+  </label>
+  <input type="file" id="filePicker" accept="application/pdf" class="visually-hidden" />
+  <p id="status" class="status">Choose a PDF to upload.</p>
+
+
 </section>

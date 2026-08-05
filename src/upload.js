@@ -3,8 +3,9 @@ import uploadPageHtml from './pages/upload.html?raw';
 import pdfListHtml from './pages/pdf-list.html?raw';
 import pdfListItemHtml from './pages/pdf-list-item.html?raw';
 import pdfListEmptyHtml from './pages/pdf-list-empty.html?raw';
+import placeholderSrc from './images/cd.webp';
 
-export const renderUploadPage = () => uploadPageHtml;
+export const renderUploadPage = () => fillTemplate(uploadPageHtml, { placeholderSrc });
 
 const listMarkup = (files) => fillTemplate(pdfListHtml, {
   items: files.map((file) => fillTemplate(pdfListItemHtml, file)).join(''),
@@ -25,7 +26,9 @@ const renderPdfList = async (statusEl) => {
       button.addEventListener('click', () => handleRemove(button.dataset.fileName, statusEl));
     });
   } catch (error) {
-    statusEl.textContent = `Unable to load PDFs: ${error.message}`;
+    if (statusEl) {
+      statusEl.textContent = `Unable to load PDFs: ${error.message}`;
+    }
   }
 };
 
@@ -34,16 +37,22 @@ const handleRemove = async (fileName, statusEl) => {
     return;
   }
 
-  statusEl.textContent = 'Removing PDF...';
+  if (statusEl) {
+    statusEl.textContent = 'Removing PDF...';
+  }
 
   try {
     const result = await window.electronAPI.removePdf(fileName);
-    statusEl.textContent = result.success ? 'PDF removed.' : `Remove failed: ${result.error}`;
+    if (statusEl) {
+      statusEl.textContent = result.success ? 'PDF removed.' : `Remove failed: ${result.error}`;
+    }
     if (result.success) {
       await renderPdfList(statusEl);
     }
   } catch (error) {
-    statusEl.textContent = `Remove failed: ${error.message}`;
+    if (statusEl) {
+      statusEl.textContent = `Remove failed: ${error.message}`;
+    }
   }
 };
 
@@ -78,12 +87,15 @@ export const attachUploadPageEvents = () => {
     return;
   }
 
-  renderPdfList(statusEl);
-
   filePicker.addEventListener('change', (event) => {
     const file = event.target.files?.[0];
     if (file) {
       handleUpload(file, statusEl);
     }
   });
+};
+
+export const attachFilesPageEvents = () => {
+  const statusEl = document.getElementById('status');
+  renderPdfList(statusEl);
 };
