@@ -6,4 +6,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   uploadFile: (fileData) => ipcRenderer.invoke('upload-file-to-folder', fileData),
   listUploadedPdfs: () => ipcRenderer.invoke('list-uploaded-pdfs'),
   removePdf: (fileName) => ipcRenderer.invoke('remove-uploaded-pdf', fileName),
+  viewPdf: (filePath, bounds) => ipcRenderer.invoke('view-pdf', { filePath, bounds }),
+  hidePdfView: () => ipcRenderer.invoke('hide-pdf-view'),
 });

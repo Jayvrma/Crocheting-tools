@@ -137,20 +137,13 @@ h1.header_upload {
   text-align: center;
 }
 
-.pdf-list ul {
-  padding-left: 1.25rem;
-}
-
-.pdf-list li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 0.5rem;
-}
-
 .remove-pdf {
   margin-left: auto;
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .nav-links {

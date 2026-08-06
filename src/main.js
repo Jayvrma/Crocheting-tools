@@ -2,15 +2,18 @@ import { app, BrowserWindow, Menu } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
 import { registerUploadHandlers } from './ipc/upload-handlers.js';
+import { registerViewHandlers } from './ipc/view-handlers.js';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
   app.quit();
 }
 
+let mainWindow;
+
 const createWindow = () => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 900,
     useContentSize: true,
@@ -34,6 +37,7 @@ const createWindow = () => {
 app.whenReady().then(() => {
   Menu.setApplicationMenu(null);
   registerUploadHandlers();
+  registerViewHandlers(() => mainWindow);
   createWindow();
 
   // On OS X it's common to re-create a window in the app when the

@@ -27,6 +27,7 @@
  */
 
 import './index.css';
+import './pages/pdf-list.css';
 import navbarHtml from './pages/navbar.html?raw';
 import homeHtml from './pages/home.html?raw';
 import filesHtml from './pages/files.html?raw';
@@ -55,6 +56,11 @@ const render = () => {
   const hash = window.location.hash || '#/';
   const path = hash.startsWith('#') ? hash.slice(1) : hash;
   const route = routes[path] || routes['/'];
+
+  if (path !== '/files') {
+    window.electronAPI.hidePdfView();
+  }
+
   app.innerHTML = route();
 
   if (path === '/upload') {
