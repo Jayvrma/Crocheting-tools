@@ -1,82 +1,98 @@
 import re
+from collections import Counter
+import pymupdf
+import tkinter as tk
+from tkinter import filedialog
 
-pattern = """
-Abbreviations
-Sc – single crochet
-Inc – increase
-Dec – decrease
-FO – Finish off
-Rnd – round
-sts – stitches
+# Regex to match lines that represent rows (rnds, rows, R)
+rounds = re.compile(r'^(?:Rnds?|Rows?|R)\s*\d+(?:\s*-\s*\d+)?(?:\s*\([^)]*\))?\s*[:.)]', re.IGNORECASE)
+# Regex to split abbrev from definition for the dictionary
+abbrev_split = re.compile(r'\s*[:=–—]\s*')
 
-Materials
-Size F 3.75mm crochet hook
-One skein of black worsted weight yarn (For example Red Heart Super Saver, Loops & Threads Impeccable, etc.)
-One piece of black felt
-One skein of black embroidery floss
-One skein of silver embroidery floss
-1 pair of 12mm safety eyes
-Scissors
-Yarn needle
-Embroidery/sewing needle
-Stuffing (I use polyester fiberfill)
+# Pdf lines extract each line of text, and other attributes like font size, boldness, etc
+def pdf_lines(path):
+    # Opens the pdf and iterates through each page, extracting text blocks and lines, filtering out empty spans, and yielding the text, font size, and boldness of each line.
+    for page in pymupdf.open(path):
+        # Gets the text of each page in a dictonary format
+        for block in page.get_text('dict')['blocks']:
+            # Gets the lines of text from each block
+            for line in block.get('lines', []):
+                # Creates a list of spans that arent empty
+                spans = [s for s in line['spans'] if s['text'].strip()]
+                if not spans:
+                    continue
+                # Joins text inro a string, checks its boldness & size
+                text = ''.join(s['text'] for s in spans).strip()
+                size = max(s['size'] for s in spans)
+                # Checks if the spans are bold and if they contain any word characters
+                all_bold = all(s['flags'] & 16 for s in spans if re.search(r'\w', s['text']))
+                yield text, size, all_bold
 
-Head
-Begin with black yarn
-Rnd 1: 6 sc in a Magic Ring (6)
-Rnd 2: inc in each sc around (12)
-Rnd 3: *sc, inc* 6 times (18)
-Rnd 4: *sc (2), inc* 6 times (24)
-Rnds 5-9: sc 24 each round
-If you are using safety eyes, place them in now between rows 7 and 8, with 5 stitches in between them. Snap on the back of the eyes, then begin stuffing the head.
-Rnd 10: *sc (2), dec* 6 times (18)
-Rnd 11: *sc (1), dec* 6 times (12)
-Rnd 12: *dec* 6 times (6)
-You should now have 6 sts left. Cut the yarn leaving a tail about 6 inches long. Use a yarn/embroidery needle to thread the tail through the remaining loops. Pull tight to close the hole, similar to closing a drawstring bag. Then weave the tail in back through the head.
+# Gets the sections of the pdf via the lines extracted from the pdf and returns a dictionary of sections with their corresponding lines of text.
+def pdf_to_sections(path):
+    # creates a list oflines, and counts the size of lines
+    lines = list(pdf_lines(path))
+    sizes = Counter()
+    # iterates through the lines, rounding the size and counting the length of text for each size
+    for text, size, _ in lines:
+        # counts the number of lines for each size b adding the length of the text to the counter
+        sizes[round(size)] += len(text)
+    body_size = sizes.most_common(1)[0][0]
+    sections, current = {}, 'Intro'
+    # Iterates through the pdf lines and checks if the line is a header or a body line, and adds it to the appropriate section in the sections dictionary.
+    for text, size, all_bold in lines:
+        # If the size of the line is less than the body size - 1 or if the text is a digit, it skips to the next line.
+        if round(size) < body_size - 1 or text.isdigit():
+            continue
+        is_header = len(text.split()) <= 5 and not rounds.match(text) and (
+            round(size) > body_size + 1 or all_bold)
+        # If the line is a header, it splits the text into parts and sets the current section to the last part. If the line is not a header, it adds the text to the current section in the sections dictionary. If the line is wrapped (i.e., it starts with a lowercase letter or an opening parenthesis and does not match certain patterns), it appends the text to the last item in the current section instead of creating a new item.
+        if is_header:
+            parts = [p.strip() for p in text.split('.') if p.strip()]
+            current = parts[-1]
+            continue
+        items = sections.setdefault(current, [])
+        # checks if the line is wrappped, if it is it appends the text to the current section for consistency
+        wrapped = (text[0].islower() or text[0] == '(') and not rounds.match(text) \
+            and not abbrev_split.search(text) and not items[-1].endswith((')', '.')) if items else False
+        if wrapped:
+            items[-1] += ' ' + text
+        else:
+            items.append(text)
+    return sections
 
-Body
-Begin with black yarn
-Rnd 1: 7 sc in a Magic Ring (7)
-Rnd 2: inc in each sc around (14)
-Rnd 3: sc 2, inc 2, sc 5, inc 2, sc 3 (18)
-Rnds 4-5: sc 18 each round
-Rnd 6: sc 2, dec 2, sc 5, dec 2, sc 3 (14)
-Rnds 7-8: sc 14 each round
-Rnd 9: sc, dec 2, sc 3, dec 2, sc 2 (10)
-FO, leaving an 8 inch tail for sewing on later.
+# finds the section in the sections dict that matches to the name of the section
+def find_section(sections, name):
+    for key, lines in sections.items():
+        if key.lower().rstrip('s') == name:
+            return lines
+    return []
 
-Feet (make 2)
-Begin with black yarn
-Rnd 1: 5 sc in a Magic Ring (5)
-Rnds 2-3: sc 5 in each rnd
-FO leaving an 8 inch tail for sewing on.
-"""
+# used to open a file dialog
+root = tk.Tk()
+root.withdraw() 
+# maks sure the user selects a pdf file
+file_path = filedialog.askopenfilename(title="Select a PDF file", filetypes=[("PDF files", "*.pdf")])
+if not file_path:
+    exit()
 
-patterns = re.compile(r'^([A-Za-z0-9]+(?:[ \t][A-Za-z0-9]+)?)[ \t]*(?:[–—=:-]|\t|[ \t]{2,})[ \t]*(.+)$', re.MULTILINE | re.IGNORECASE)
-abbreviations = re.compile(r'\b(?:Sc|Inc|Dec|FO|Rnd|sts)\b',re.MULTILINE | re.IGNORECASE)
-rounds = re.compile(r'^(?:Rnds?|Rows?)\.?[ \t]*\d+(?:-\d+)?:.*$', re.MULTILINE | re.IGNORECASE)
+sections = pdf_to_sections(file_path)
 
-# matches = patterns.finditer(pattern)
-with open('data/pattern.txt', 'r', encoding='utf-8') as f:
-    contents= f.read()
-    # only look for definitions in the Abbreviations block (up to the first blank line)
-    abbreviation_block = contents.split('\n\n')[0]
-    matches = patterns.finditer(abbreviation_block)
-    matchesabv = abbreviations.finditer(abbreviation_block)
-    for match in matches:
-        print(match)
-    for match in matchesabv:
-        print(match)
-sections = {}
-for block in contents.split('\n\n'):
-    lines = block.strip().split('\n')
-    section_header = lines[0].strip()
-    section_rounds = rounds.findall(block)
-    if section_rounds:
-        sections[section_header] = section_rounds
-        print(f"Section: {section_header}")
-        for rnd in section_rounds:
-            print(f"Round: {rnd}")
-print(sections)
-abbrev_dict = dict(patterns.findall(abbreviation_block))
+abbrev_dict = {}
+# iterates through the lines for the abbv section adding the abbrev and definition to the abbrev_dict
+for line in find_section(sections, 'abbreviation'):
+    parts = abbrev_split.split(line, maxsplit=1)
+    if len(parts) == 2:
+        abbrev_dict[parts[0]] = parts[1]
+
+materials = find_section(sections, 'material')
+
+pattern_sections = {}
+for name, lines in sections.items():
+    found = [line for line in lines if rounds.match(line)]
+    if found:
+        pattern_sections[name] = found
+
 print(abbrev_dict)
+print(materials)
+print(pattern_sections)
