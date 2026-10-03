@@ -1,6 +1,10 @@
 const { FusesPlugin } = require('@electron-forge/plugin-fuses');
 const { FuseV1Options, FuseVersion } = require('@electron/fuses');
 
+// VS Code (and some other tools) set ELECTRON_RUN_AS_NODE=1, which makes Electron
+// run as plain Node and exit immediately instead of opening the app window.
+delete process.env.ELECTRON_RUN_AS_NODE;
+
 module.exports = {
   packagerConfig: {
     asar: true,

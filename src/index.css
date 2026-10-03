@@ -6,7 +6,7 @@ body {
     sans-serif;
   margin: 0;
   min-height: 100vh;
-  background: #fff;
+  background: #f5f0f0;
   color: #222;
 }
 
@@ -59,8 +59,8 @@ body {
   font-size: 1.2rem;
 }
 
-.navbar a:hover {
-  text-decoration: none;
+.navbar a:hover { 
+  font-weight: bold;
 }
 
 .page {
@@ -166,4 +166,54 @@ h1.header_upload {
   justify-content: center;
   align-items: center;
   align-self: center;
+}
+.top-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+  width: 100%;
+  height: 20vh;
+  margin-bottom: 1rem;
+}
+.page-wide {
+  align-self: stretch;
+  width: auto;
+  max-width: none;
+  margin: -2rem -2rem 0;
+  padding: 0;
+}
+.page-wide .top-row > div {
+  border-top: none;
+}
+.Files, .Materials, .Abbreviation {
+  flex: 1;
+  text-align: center;
+  font-weight: bold;
+  border:#000000 solid 1px;
+}
+/* Compact PDF list inside the view page's File list box */
+.Files {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow-y: auto;
+}
+.Files .files-sidebar {
+  width: auto;
+  padding: 0.5rem;
+  border-right: none;
+  font-weight: normal;
+}
+.Files .list-group {
+  overflow: visible;
+}
+.Files .list-group-item {
+  flex: none;
+  gap: 1rem;
+  padding: 0.4rem 0.75rem;
+}
+.Files .list-group-item-empty {
+  display: none;
 }
