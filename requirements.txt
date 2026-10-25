@@ -1,0 +1,8 @@
+# Crochet label — annotation stack
+#
+# Install into the local virtualenv:
+#   .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+#
+# Pin this to the exact version you have working before sharing the repo;
+# `pip freeze > requirements.lock.txt` captures the full transitive set.
+label-studio>=1.20,<2
