@@ -1,0 +1,56 @@
+<!--
+  Crochet pattern parsing — span labeling + relations.
+
+  Paste into Label Studio: Project → Settings → Labeling Interface → Code.
+  Expects each task to carry `text` (the pattern body) and, optionally,
+  `title` and `source` for context. See data/sample-patterns.json.
+
+  Keyboard: labels are numbered 1-9 in the order listed below, so the
+  hotkeys stay stable if you reorder — put the most-used labels first.
+-->
+<View>
+  <Style>
+    .htx-text { line-height: 1.9; font-size: 15px; }
+  </Style>
+
+  <Header value="$title"/>
+  <Text name="source" value="$source" inline="true"/>
+
+  <Labels name="label" toName="text" showInline="true">
+    <Label value="STITCH"    background="#3b82f6" hotkey="1"/>
+    <Label value="COUNT"     background="#16a34a" hotkey="2"/>
+    <Label value="REPEAT"    background="#a855f7" hotkey="3"/>
+    <Label value="ROW"       background="#ea580c" hotkey="4"/>
+    <Label value="SECTION"   background="#0891b2" hotkey="5"/>
+    <Label value="HOOK"      background="#ca8a04" hotkey="6"/>
+    <Label value="YARN"      background="#db2777" hotkey="7"/>
+    <Label value="GAUGE"     background="#65a30d" hotkey="8"/>
+    <Label value="ABBREV"    background="#78716c" hotkey="9"/>
+    <Label value="NOTE"      background="#94a3b8"/>
+  </Labels>
+
+  <Text name="text" value="$text"/>
+
+  <!--
+    Relations tie a COUNT to the STITCH it quantifies, and a REPEAT
+    marker to the span it repeats. Draw them with the link tool after
+    selecting a span.
+  -->
+  <Relations>
+    <Relation value="count_of"/>
+    <Relation value="repeats"/>
+    <Relation value="defines"/>
+  </Relations>
+
+  <Header value="Row-level metadata"/>
+  <Choices name="construction" toName="text" choice="single" showInline="true">
+    <Choice value="worked flat"/>
+    <Choice value="worked in the round"/>
+    <Choice value="mixed"/>
+    <Choice value="not stated"/>
+  </Choices>
+
+  <TextArea name="notes" toName="text"
+            placeholder="Ambiguities, typos in the source, judgement calls…"
+            rows="2" maxSubmissions="1" editable="true"/>
+</View>

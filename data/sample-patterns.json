@@ -1,0 +1,44 @@
+[
+  {
+    "data": {
+      "title": "Amigurumi sphere — basic increase/decrease",
+      "source": "seed sample, written for this repo",
+      "text": "Materials: worsted weight cotton, 3.5 mm hook, polyfill stuffing.\n\nAbbreviations: ch = chain, sc = single crochet, inc = 2 sc in one st, dec = sc2tog, st(s) = stitch(es).\n\nWork in continuous rounds. Do not join.\n\nRnd 1: 6 sc in a magic ring (6)\nRnd 2: inc in each st around (12)\nRnd 3: [sc, inc] x6 (18)\nRnd 4: [2 sc, inc] x6 (24)\nRnds 5-8: sc in each st around (24)\nRnd 9: [2 sc, dec] x6 (18)\nRnd 10: [sc, dec] x6 (12)\nStuff firmly, then Rnd 11: dec x6 (6)\nFasten off, leaving a long tail. Weave the tail through the front loops of the remaining 6 sts and pull closed."
+    }
+  },
+  {
+    "data": {
+      "title": "Granny square — rounds with corner groups",
+      "source": "seed sample, written for this repo",
+      "text": "Hook: 4.0 mm. Yarn: DK weight acrylic in three colours (A, B, C).\n\nGauge: one completed round measures 7 cm across.\n\nWith Colour A, ch 4 and join with a sl st to form a ring.\n\nRnd 1: ch 3 (counts as first dc), 2 dc in ring, ch 2, *3 dc in ring, ch 2* three times, join with sl st to top of ch 3. (12 dc, 4 ch-2 spaces)\nRnd 2: join Colour B in any ch-2 space. Ch 3, 2 dc in same space, ch 2, 3 dc in same space, *ch 1, [3 dc, ch 2, 3 dc] in next ch-2 space* around, ch 1, join. (24 dc)\nRnd 3: join Colour C in any corner space. Repeat Rnd 2, working 3 dc into each ch-1 space along the sides. (36 dc)\n\nFinishing: fasten off, weave in all ends, block lightly to square up the corners."
+    }
+  },
+  {
+    "data": {
+      "title": "Ribbed beanie — worked flat then seamed",
+      "source": "seed sample, written for this repo",
+      "text": "Yarn: Aran weight wool, approx 180 m. Hook: 5.0 mm. Gauge: 14 sts x 12 rows = 10 cm in hdc blo.\n\nBrim\nCh 31.\nRow 1: hdc in 2nd ch from hook and in each ch across, turn. (30 sts)\nRow 2: ch 1 (does not count as a st), hdc blo in each st across, turn. (30 sts)\nRows 3-60: repeat Row 2.\n\nBody\nRow 61: ch 1, hdc in each st across, turn. (30 sts)\nRows 62-70: repeat Row 61.\n\nAssembly\nFold the panel in half and sl st the two short edges together. Run a gathering thread through the top edge, cinch closed, and secure. Turn right side out."
+    }
+  },
+  {
+    "data": {
+      "title": "Shell-stitch edging",
+      "source": "seed sample, written for this repo",
+      "text": "Rnd 1: with a 3.0 mm hook and fingering weight cotton, sc evenly around the edge of the finished piece, working 3 sc into each corner. Join with sl st to first sc.\nRnd 2: ch 1, sc in first st, skip 2 sts, *5 dc in next st (shell made), skip 2 sts, sc in next st, skip 2 sts* repeat from * to * around, join to first sc.\nRnd 3: sl st into the centre dc of the first shell, ch 3, 4 dc in same st, *sc in the sc between shells, 5 dc in centre dc of next shell* around, join.\nFasten off. Block the edging flat so the shells open up."
+    }
+  },
+  {
+    "data": {
+      "title": "Terse forum-style pattern (messy input)",
+      "source": "seed sample — deliberately informal, to exercise boundary rules",
+      "text": "ok so magic ring, 6sc. r2 inc all around =12. r3 (sc,inc)*6 =18. r4-6 sc around. r7 (sc,dec)*6 =12. r8 dec*6, close up. 4mm hook, any worsted. took me like 20 min. don't count the ch1 at the start of rows, i never do."
+    }
+  },
+  {
+    "data": {
+      "title": "Abbreviation key only",
+      "source": "seed sample, written for this repo",
+      "text": "Abbreviations used throughout this document:\n\nch = chain\nsl st = slip stitch\nsc = single crochet\nhdc = half double crochet\ndc = double crochet\ntr = treble crochet\nblo = back loop only\nflo = front loop only\ninc = increase (2 stitches worked into one stitch)\ndec = decrease (two stitches worked together)\nsc2tog = single crochet two together\nFO = fasten off\nWS / RS = wrong side / right side\nst(s) = stitch(es)\nrep = repeat"
+    }
+  }
+]
