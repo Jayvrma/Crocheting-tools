@@ -32,7 +32,7 @@ const fromDraft = () => ({
 });
 
 const iconButton = (action, label, title, data = '') => (
-  `<button type="button" class="review-icon-btn" data-action="${action}" ${data} title="${title}" aria-label="${title}">${label}</button>`
+  `<button type="button" class="btn btn-secondary btn-icon" data-action="${action}" ${data} title="${title}" aria-label="${title}">${label}</button>`
 );
 
 const abbreviationsHtml = () => `
@@ -44,7 +44,7 @@ const abbreviationsHtml = () => `
         <input class="review-input" data-field="meaning" data-index="${i}" value="${escapeHtml(meaning)}" placeholder="single crochet" />
         ${iconButton('delete-abbrev', '✕', 'Delete abbreviation', `data-index="${i}"`)}
       </div>`).join('')}
-    <button type="button" class="review-add-btn" data-action="add-abbrev">+ Add abbreviation</button>
+    <button type="button" class="btn btn-small btn-dashed" data-action="add-abbrev">+ Add abbreviation</button>
   </section>`;
 
 const materialsHtml = () => `
@@ -67,14 +67,14 @@ const sectionHtml = ({ name, rounds }, s) => `
         ${iconButton('move-round-down', '↓', 'Move round down', `data-section="${s}" data-index="${r}" ${r === rounds.length - 1 ? 'disabled' : ''}`)}
         ${iconButton('delete-round', '✕', 'Delete round', `data-section="${s}" data-index="${r}"`)}
       </div>`).join('')}
-    <button type="button" class="review-add-btn" data-action="add-round" data-section="${s}">+ Add round</button>
+    <button type="button" class="btn btn-small btn-dashed" data-action="add-round" data-section="${s}">+ Add round</button>
   </div>`;
 
 const roundsHtml = () => `
   <section class="review-section">
     <h2>Rounds</h2>
     ${draft.sections.length ? draft.sections.map(sectionHtml).join('') : '<p class="review-empty">No rounds found. Add a section to enter them by hand.</p>'}
-    <button type="button" class="review-add-btn" data-action="add-section">+ Add section</button>
+    <button type="button" class="btn btn-small btn-dashed" data-action="add-section">+ Add section</button>
   </section>`;
 
 const renderForm = () => {
@@ -85,7 +85,7 @@ const renderForm = () => {
     ${materialsHtml()}
     ${roundsHtml()}
     <div class="review-actions">
-      <button type="button" class="review-save-btn" data-action="save">Save corrections</button>
+      <button type="button" class="btn" data-action="save">Save corrections</button>
     </div>`;
 };
 

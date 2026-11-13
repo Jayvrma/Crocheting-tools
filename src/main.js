@@ -1,6 +1,8 @@
-import { app, BrowserWindow, Menu } from 'electron';
+import { app, BrowserWindow, Menu, nativeImage } from 'electron';
 import path from 'node:path';
 import started from 'electron-squirrel-startup';
+// Vite inlines this as a data URL, so the icon works in dev and in the packaged app
+import iconDataUrl from './images/icon.png';
 import { registerUploadHandlers } from './ipc/upload-handlers.js';
 import { registerViewHandlers } from './ipc/view-handlers.js';
 import { registerParseHandlers } from './ipc/parse-handlers.js';
@@ -15,13 +17,14 @@ let mainWindow;
 const createWindow = () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 900,
     useContentSize: true,
+    icon: nativeImage.createFromDataURL(iconDataUrl),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      devTools: false
     },
   });
+  mainWindow.maximize();
 
   // and load the index.html of the app.
   if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {

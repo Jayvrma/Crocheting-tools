@@ -4,10 +4,17 @@ import pymupdf
 import json, sys
 
 # Regex to match lines that represent rows (rnds, rows, R)
-rounds = re.compile(r'^(?:Rounds?|Rnds?|Rows?|R)\s*\d+(?:\s*-\s*\d+)?(?:\s*\([^)]*\))?\s*[:.)]', re.IGNORECASE)
+# Ranges can use -, en/em dashes, "to", commas, & or "and", and may repeat the prefix (R7-R9)
+round_prefix = r'(?:Rounds?|Rnds?|Rows?|R)'
+range_sep = r'\s*(?:[-–—]|to|t/m|,|&|and)\s*'
+rounds = re.compile(rf'^{round_prefix}\s*\d+(?:{range_sep}(?:{round_prefix}\s*)?\d+)*(?:\s*\([^)]*\))?\s*[:.)]', re.IGNORECASE)
+range_re = re.compile(rf'^{round_prefix}\s*(\d+)(?:{range_sep}(?:{round_prefix}\s*)?(\d+))?', re.I)
 # Regex to split abbrev from definition for the dictionary
 abbrev_split = re.compile(r'\s*[:=–—]\s*')
-
+def expand(line):
+    m = range_re.match(line)
+    start, end = int(m.group(1)), int(m.group(2) or m.group(1))
+    return [{"number": n, "text": line} for n in range(start, end + 1)]
 # Pdf lines extract each line of text, and other attributes like font size, boldness, etc
 def pdf_lines(path):
     # Opens the pdf and iterates through each page, extracting text blocks and lines, filtering out empty spans, and yielding the text, font size, and boldness of each line.

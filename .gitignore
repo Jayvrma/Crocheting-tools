@@ -87,15 +87,14 @@ typings/
 # Electron-Forge
 out/
 
+# Stray Vite build output
+dist/
+
 # Python environment
 .venv/
 __pycache__/
 *.py[cod]
 *.egg-info/
-
-# Label Studio runtime data (SQLite DB, media uploads, exports)
-.label-studio/
-export/
 
 # Local secrets / overrides
 .env

@@ -19,6 +19,8 @@ const listMarkup = (files) => {
 
 let currentlyViewedPath = null;
 let currentPaneSelector = '.files-pdf';
+// What clicking a row does; the view page swaps this to fill its sections instead of showing the PDF
+let selectHandler = (file) => viewPdf(file.path);
 
 const getPaneBounds = (selector) => {
   const pane = document.querySelector(selector);
@@ -86,7 +88,7 @@ const renderPdfList = async (statusEl) => {
     rows.forEach((row, index) => {
       row.addEventListener('click', () => {
         rows.forEach((other) => other.classList.toggle('list-group-item-selected', other === row));
-        viewPdf(files[index].path);
+        selectHandler(files[index]);
       });
     });
   } catch (error) {
@@ -189,8 +191,9 @@ export const attachUploadPageEvents = () => {
   });
 };
 
-export const attachFilesPageEvents = () => {
+export const attachFilesPageEvents = (onSelect = (file) => viewPdf(file.path)) => {
   currentlyViewedPath = null;
+  selectHandler = onSelect;
   const statusEl = document.getElementById('status');
-  renderPdfList(statusEl);
+  return renderPdfList(statusEl);
 };

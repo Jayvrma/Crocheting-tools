@@ -8,12 +8,16 @@ delete process.env.ELECTRON_RUN_AS_NODE;
 module.exports = {
   packagerConfig: {
     asar: true,
+    // No extension: the packager picks icon.ico on Windows (and would want icon.icns on macOS)
+    icon: 'src/images/icon',
   },
   rebuildConfig: {},
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        setupIcon: 'src/images/icon.ico',
+      },
     },
     {
       name: '@electron-forge/maker-zip',
