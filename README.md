@@ -19,18 +19,6 @@ correct anything it got wrong, then track your progress row by row.
 - Python 3 on your `PATH` as `python`, with PyMuPDF installed — the app runs
   `data/parse.py` to read PDFs:
 
-```powershell
-python -m pip install -r requirements.txt
-```
-
-## Running
-
-```powershell
-npm install
-npm start
-```
-
-`npm run make` builds an installer into `out/`.
 
 ## Where data is kept
 
