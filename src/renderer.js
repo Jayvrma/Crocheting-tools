@@ -11,21 +11,23 @@ import logoSrc from './images/cat.png';
 import { fillTemplate } from './template.js';
 import { attachFilesPageEvents, attachUploadPageEvents, renderUploadPage } from './upload.js';
 import { attachReviewPageEvents } from './review.js';
+import { attachViewPageEvents, viewNavbarActions } from './view.js';
 
 const app = document.createElement('main');
 app.className = 'app-shell';
 document.body.innerHTML = '';
 document.body.appendChild(app);
 
-const navbar = fillTemplate(navbarHtml, { logoSrc });
+// actions fills the navbar's top-right slot for pages that need their own buttons there
+const navbar = (actions = '') => fillTemplate(navbarHtml, { logoSrc, actions });
 
 const routes = {
-  '/': () => navbar + homeHtml,
-  '/upload': () => navbar + renderUploadPage(),
-  '/files': () => navbar + filesHtml,
-  '/view': () => navbar + viewHtml,
-  '/info': () => navbar + infoHtml,
-  '/review': () => navbar + reviewHtml,
+  '/': () => navbar() + homeHtml,
+  '/upload': () => navbar() + renderUploadPage(),
+  '/files': () => navbar() + filesHtml,
+  '/view': () => navbar(viewNavbarActions) + viewHtml,
+  '/info': () => navbar() + infoHtml,
+  '/review': () => navbar() + reviewHtml,
 };
 
 const render = () => {
@@ -44,8 +46,12 @@ const render = () => {
     attachUploadPageEvents();
   }
 
-  if (path === '/files' || path === '/view') {
+  if (path === '/files') {
     attachFilesPageEvents();
+  }
+
+  if (path === '/view') {
+    attachViewPageEvents();
   }
 
   if (path === '/review') {

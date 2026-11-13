@@ -1,6 +1,0 @@
-.nav-links{
-    display: grid;
-    grid-template-areas:
-        "header header"
-        "menu content"
-}

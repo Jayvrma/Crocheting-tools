@@ -1,11 +1,28 @@
 <section class="page page-wide">
-  <div class = "top-row">
-    <div class = "Files">File list 
-        <aside class="files-sidebar">
+  <div class="top-row">
+    <div class="Files">File list
+      <aside class="files-sidebar">
         <div id="pdfList" class="pdf-list"></div>
-  </aside>
+      </aside>
     </div>
-    <div class = "Materials">Materials</div>
-    <div class = "Abbreviation">Abbreviation </div>
+    <div class="Materials">Materials<ul id="viewMaterials"></ul>
+    </div>
+    <div class="Abbreviation">Abbreviation <ul id="viewAbbrevs"></ul>
+    </div>
   </div>
+  <div class="Rows">
+    <div class="row-tracker-header">
+      <div class="row-tracker-controls">
+        <button type="button" class="btn btn-secondary" data-row-action="prev" disabled>&uarr; Previous</button>
+        <span id="rowCounter" class="row-counter">No rows</span>
+        <button type="button" class="btn" data-row-action="next" disabled>Next &darr;</button>
+        <button type="button" class="btn btn-secondary" data-row-action="reset" disabled>Reset</button>
+      </div>
+      <p class="row-tracker-guide">
+        <kbd>Space</kbd> or <kbd>&darr;</kbd> finish row &middot; <kbd>&uarr;</kbd> go back &middot; click a row to jump to it &middot; progress is saved per pattern
+      </p>
+    </div>
+    <div id="viewRows"></div>
+  </div>
+  <p id="status"></p>
 </section>
