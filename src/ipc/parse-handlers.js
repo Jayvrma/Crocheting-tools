@@ -4,8 +4,11 @@ import path from 'node:path';
 import fs from 'node:fs';
 
 const PARSED_DIR = path.join(app.getPath('userData'), 'parsed');
-const PYTHON = 'python';
-const SCRIPT = path.join(app.getAppPath(), 'data', 'parse.py');
+// The packaged app ships its own Python with PyMuPDF next to parse.py (see forge.config.js),
+// so users don't need Python. In development it uses python from PATH.
+const [PARSER, PARSER_ARGS] = app.isPackaged
+  ? [path.join(process.resourcesPath, 'python-dist', 'python.exe'), [path.join(process.resourcesPath, 'parse.py')]]
+  : ['python', [path.join(app.getAppPath(), 'data', 'parse.py')]];
 
 const parsedPathFor = (pdfName) => path.join(PARSED_DIR, `${path.basename(pdfName, '.pdf')}.json`);
 
@@ -13,7 +16,7 @@ export const registerParseHandlers = () => {
   fs.mkdirSync(PARSED_DIR, { recursive: true });
 
   ipcMain.handle('parse-pdf', (_event, pdfPath) => new Promise((resolve) => {
-    execFile(PYTHON, [SCRIPT, pdfPath], { maxBuffer: 10 * 1024 * 1024 }, (error, stdout, stderr) => {
+    execFile(PARSER, [...PARSER_ARGS, pdfPath], { maxBuffer: 10 * 1024 * 1024, windowsHide: true }, (error, stdout, stderr) => {
       if (error) {
         return resolve({ success: false, error: stderr || error.message });
       }

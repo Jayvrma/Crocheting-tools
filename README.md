@@ -13,11 +13,26 @@ correct anything it got wrong, then track your progress row by row.
 | Review | Edit the parsed abbreviations, materials and rounds next to the PDF |
 | View | Materials, abbreviations and a row tracker for the selected pattern |
 
-## Requirements
+## Installing
+
+Download `crocheting-tools-1.0.0 Setup.exe` from the
+[Releases](https://github.com/Jayvrma/Crocheting-tools/releases) page and run it,
+or unzip the portable `.zip` and run `crocheting-tools.exe`. Windows only.
+Nothing else is needed: the app carries its own copy of Python for reading PDFs.
+
+Windows may show a "Windows protected your PC" warning because the app isn't
+code-signed. Click **More info → Run anyway**.
+
+## Developing
 
 - Node.js (for Electron Forge)
-- Python 3 on your `PATH` as `python`, with PyMuPDF installed — the app runs
-  `data/parse.py` to read PDFs:
+- Python 3 on your `PATH` as `python`, with PyMuPDF installed
+  (`python -m pip install -r requirements.txt`). `npm start` runs
+  `data/parse.py` with it.
+
+`npm run make` builds the installer and zip into `out/make/`. The first build
+downloads Python's embeddable package into `python-dist/` and installs PyMuPDF
+into it; later builds reuse it.
 
 
 ## Where data is kept
