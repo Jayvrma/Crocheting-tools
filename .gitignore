@@ -105,3 +105,6 @@ Thumbs.db
 desktop.ini
 .vscode/
 .idea/
+
+# Bundled Python + PyMuPDF for the packaged app (made by the forge prePackage hook)
+python-dist/
