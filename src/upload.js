@@ -18,14 +18,15 @@ const listMarkup = (files) => {
 };
 
 let currentlyViewedPath = null;
+let currentPaneSelector = '.files-pdf';
 
-const getFilesMainBounds = () => {
-  const filesMain = document.querySelector('.files-main');
-  if (!filesMain) {
+const getPaneBounds = (selector) => {
+  const pane = document.querySelector(selector);
+  if (!pane) {
     return null;
   }
 
-  const rect = filesMain.getBoundingClientRect();
+  const rect = pane.getBoundingClientRect();
   return {
     x: Math.round(rect.left),
     y: Math.round(rect.top),
@@ -34,20 +35,26 @@ const getFilesMainBounds = () => {
   };
 };
 
-const viewPdf = (filePath) => {
-  const bounds = getFilesMainBounds();
+// Shows the PDF over the element matching selector (the files page uses .files-pdf, review uses .review-pdf)
+export const viewPdf = (filePath, selector = '.files-pdf') => {
+  const bounds = getPaneBounds(selector);
   if (!bounds) {
     return;
   }
 
   currentlyViewedPath = filePath;
+  currentPaneSelector = selector;
   window.electronAPI.viewPdf(filePath, bounds);
 };
 
 window.addEventListener('resize', () => {
   if (currentlyViewedPath) {
-    viewPdf(currentlyViewedPath);
+    viewPdf(currentlyViewedPath, currentPaneSelector);
   }
+});
+
+window.addEventListener('hashchange', () => {
+  currentlyViewedPath = null;
 });
 
 const renderPdfList = async (statusEl) => {
@@ -68,12 +75,53 @@ const renderPdfList = async (statusEl) => {
       });
     });
 
-    pdfList.querySelectorAll('.list-group-item:not(.list-group-item-empty)').forEach((row, index) => {
-      row.addEventListener('click', () => viewPdf(files[index].path));
+    pdfList.querySelectorAll('.parse-pdf').forEach((button, index) => {
+      button.addEventListener('click', (event) => {
+        event.stopPropagation();
+        handleParse(files[index], statusEl);
+      });
+    });
+
+    const rows = pdfList.querySelectorAll('.list-group-item:not(.list-group-item-empty)');
+    rows.forEach((row, index) => {
+      row.addEventListener('click', () => {
+        rows.forEach((other) => other.classList.toggle('list-group-item-selected', other === row));
+        viewPdf(files[index].path);
+      });
     });
   } catch (error) {
     if (statusEl) {
       statusEl.textContent = `Unable to load PDFs: ${error.message}`;
+    }
+  }
+};
+
+const handleParse = async (file, statusEl) => {
+  if (statusEl) {
+    statusEl.textContent = 'Parsing...';
+  }
+
+  try {
+    const result = await window.electronAPI.parsePdf(file.path);
+    if (!result.success) {
+      if (statusEl) {
+        statusEl.textContent = `Parse failed: ${result.error}`;
+      }
+      return;
+    }
+
+    const saved = await window.electronAPI.saveParsed(file.name, result.parsed);
+    if (!saved.success) {
+      if (statusEl) {
+        statusEl.textContent = `Save failed: ${saved.error}`;
+      }
+      return;
+    }
+
+    window.location.hash = `#/review?file=${encodeURIComponent(file.name)}`;
+  } catch (error) {
+    if (statusEl) {
+      statusEl.textContent = `Parse failed: ${error.message}`;
     }
   }
 };
