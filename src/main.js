@@ -3,6 +3,7 @@ import path from 'node:path';
 import started from 'electron-squirrel-startup';
 import { registerUploadHandlers } from './ipc/upload-handlers.js';
 import { registerViewHandlers } from './ipc/view-handlers.js';
+import { registerParseHandlers } from './ipc/parse-handlers.js';
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -38,6 +39,7 @@ app.whenReady().then(() => {
   Menu.setApplicationMenu(null);
   registerUploadHandlers();
   registerViewHandlers(() => mainWindow);
+  registerParseHandlers();
   createWindow();
 
   // On OS X it's common to re-create a window in the app when the

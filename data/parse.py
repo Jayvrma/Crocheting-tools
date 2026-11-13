@@ -1,11 +1,10 @@
 import re
 from collections import Counter
 import pymupdf
-import tkinter as tk
-from tkinter import filedialog
+import json, sys
 
 # Regex to match lines that represent rows (rnds, rows, R)
-rounds = re.compile(r'^(?:Rnds?|Rows?|R)\s*\d+(?:\s*-\s*\d+)?(?:\s*\([^)]*\))?\s*[:.)]', re.IGNORECASE)
+rounds = re.compile(r'^(?:Rounds?|Rnds?|Rows?|R)\s*\d+(?:\s*-\s*\d+)?(?:\s*\([^)]*\))?\s*[:.)]', re.IGNORECASE)
 # Regex to split abbrev from definition for the dictionary
 abbrev_split = re.compile(r'\s*[:=–—]\s*')
 
@@ -69,11 +68,12 @@ def find_section(sections, name):
     return []
 
 # used to open a file dialog
-root = tk.Tk()
-root.withdraw() 
+argv = sys.argv[1:] if len(sys.argv) > 1 else []
 # maks sure the user selects a pdf file
-file_path = filedialog.askopenfilename(title="Select a PDF file", filetypes=[("PDF files", "*.pdf")])
-if not file_path:
+if argv:
+    file_path = argv[0]
+else:
+    print("Please provide a PDF file path as an argument.")
     exit()
 
 sections = pdf_to_sections(file_path)
@@ -93,6 +93,14 @@ for name, lines in sections.items():
     if found:
         pattern_sections[name] = found
 
-print(abbrev_dict)
-print(materials)
-print(pattern_sections)
+def main():
+    # Prints the sections, abbrev_dict, materials, and pattern_sections as JSON so the app can read it
+    print(json.dumps({
+        'sections': sections,
+        'abbrev_dict': abbrev_dict,
+        'materials': materials,
+        'pattern_sections': pattern_sections
+    }))
+
+if __name__ == "__main__":
+    main()
