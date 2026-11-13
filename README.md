@@ -15,7 +15,7 @@ correct anything it got wrong, then track your progress row by row.
 
 ## Installing
 
-Download `crocheting-tools-1.0.0 Setup.exe` from the
+Download `crocheting-tools-1.0.0.Setup.exe` from the
 [Releases](https://github.com/Jayvrma/Crocheting-tools/releases) page and run it,
 or unzip the portable `.zip` and run `crocheting-tools.exe`. Windows only.
 Nothing else is needed: the app carries its own copy of Python for reading PDFs.
