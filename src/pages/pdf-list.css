@@ -5,25 +5,29 @@
     align-items: stretch;
 }
 
-.files-main {
+/* Empty on purpose: the main process draws the selected PDF on top of this box */
+.files-pdf {
     flex: 1;
     min-width: 0;
+    min-height: 70vh;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-    padding: 2rem;
-    box-sizing: border-box;
+    align-items: center;
+    justify-content: center;
+    background: #f9fafb;
+}
+
+.files-pdf-placeholder {
+    color: #6b7280;
 }
 
 .files-sidebar {
-    width: 25%;
+    width: 35%;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
     padding: 2rem 1rem;
     box-sizing: border-box;
-    border-right: 1px solid #e5e7eb;
+    border-left: 1px solid #e5e7eb;
 }
 
 .pdf-list {
@@ -73,10 +77,20 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 2rem;
-    padding: 1rem 5rem;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
     cursor: pointer;
     flex: 1;
+}
+
+.list-group-item span {
+    flex: 1;
+    min-width: 0;
+}
+
+.list-group-item-selected,
+.list-group-item-selected:hover {
+    background-color: #dbeafe;
 }
 
 .list-group-item-empty {
